@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Random-Entry Null Model: the Four USDJPY Candidates</title>
+<meta name="description" content="Random-timing null model for the four USDJPY trend candidates: no evidence they beat random timing or plain long exposure.">
+<meta name="color-scheme" content="light dark">
+<style>
+:root {
+  --bg: #fbfbfa; --surface: #ffffff; --text: #1d2125; --muted: #5d6670; --border: #e3e5e8;
+  --accent: #1f5f99; --accent-soft: #eaf2fa; --row: #f6f7f8; --ok: #1d7a3e; --no: #b3261e;
+  --code: #f1f3f5; --quote: #fff7e6; --quote-border: #e0a526;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111417; --surface: #181c20; --text: #e4e7ea; --muted: #9aa4ae; --border: #2b3137;
+    --accent: #7db3e8; --accent-soft: #1b2733; --row: #1d2227; --ok: #5cc184; --no: #f0857d;
+    --code: #232a31; --quote: #2a2418; --quote-border: #c9922a;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+.layout { display: grid; grid-template-columns: 17rem minmax(0, 1fr); max-width: 82rem; margin: 0 auto; }
+nav.toc {
+  position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
+  padding: 2rem 1.25rem; border-right: 1px solid var(--border);
+}
+nav.toc .label { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 .75rem; }
+nav.toc ol { list-style: none; margin: 0; padding: 0; }
+nav.toc li { margin: 0; }
+nav.toc a {
+  display: block; padding: .3rem .6rem; border-radius: 6px; color: var(--text);
+  text-decoration: none; font-size: .9rem; line-height: 1.35;
+}
+nav.toc a:hover, nav.toc a:focus-visible { background: var(--accent-soft); color: var(--accent); }
+main { padding: 2.5rem 3rem 4rem; min-width: 0; }
+article { max-width: 60rem; }
+h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 .5rem; letter-spacing: -.01em; }
+h2 { font-size: 1.45rem; margin: 2.75rem 0 .9rem; padding-top: .5rem; border-top: 1px solid var(--border); }
+h3 { font-size: 1.15rem; margin: 2rem 0 .6rem; }
+h2, h3 { position: relative; }
+.anchor {
+  position: absolute; left: -1.1em; color: var(--muted); text-decoration: none; opacity: 0;
+  font-weight: 400; padding-right: .3em;
+}
+h2:hover .anchor, h3:hover .anchor, .anchor:focus { opacity: 1; }
+p, li { max-width: 46rem; }
+a { color: var(--accent); }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+code {
+  font: .88em/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  background: var(--code); padding: .1em .35em; border-radius: 4px;
+}
+pre { background: var(--code); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+pre code { background: none; padding: 0; }
+blockquote {
+  margin: 1.25rem 0; padding: .75rem 1rem; background: var(--quote);
+  border-left: 4px solid var(--quote-border); border-radius: 0 8px 8px 0;
+}
+blockquote p { margin: .25rem 0; }
+.table-wrap {
+  overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--surface); -webkit-overflow-scrolling: touch;
+}
+table { border-collapse: collapse; width: 100%; font-size: .9rem; font-variant-numeric: tabular-nums; }
+th, td { padding: .5rem .75rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+th { background: var(--row); font-weight: 600; white-space: nowrap; }
+tbody tr:nth-child(even) { background: var(--row); }
+tbody tr:last-child td { border-bottom: 0; }
+.ok { color: var(--ok); font-weight: 700; }
+.no { color: var(--no); font-weight: 700; }
+.mobile-nav { display: none; }
+.back { margin: 0 0 1.25rem; font-size: .9rem; }
+.back a { text-decoration: none; }
+footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--muted); font-size: .85rem; }
+@media (max-width: 64rem) {
+  .layout { display: block; }
+  nav.toc { display: none; }
+  main { padding: 1.25rem 1rem 3rem; }
+  .mobile-nav {
+    display: block; margin: 0 0 1.5rem; border: 1px solid var(--border); border-radius: 8px;
+    background: var(--surface);
+  }
+  .mobile-nav summary { cursor: pointer; padding: .7rem 1rem; font-weight: 600; }
+  .mobile-nav ol { list-style: none; margin: 0; padding: 0 .5rem .75rem; }
+  .mobile-nav a { display: block; padding: .35rem .5rem; color: var(--text); text-decoration: none; }
+  h1 { font-size: 1.6rem; }
+  .anchor { display: none; }
+}
+@media print {
+  nav.toc, .mobile-nav, .anchor { display: none !important; }
+  .layout { display: block; }
+  main { padding: 0; }
+  .table-wrap { overflow: visible; border: 0; }
+  h2 { break-after: avoid; }
+  tr { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Sections">
+<p class="back"><a href="index.html">&larr; Validation study report</a></p>
+<p class="label">Contents</p>
+<ol>
+<li><a href="#verdict">Verdict</a></li>
+<li><a href="#1-how-the-null-model-works">1. How the null model works</a></li>
+<li><a href="#2-primary-run-out-of-sample-with-swap-real-risk-rules-1-000-runs-each">2. Primary run: out-of-sample, with swap, real risk rules (1,000 runs each)</a></li>
+<li><a href="#3-sensitivity-run-out-of-sample-without-swap-500-runs-each">3. Sensitivity run: out-of-sample, without swap (500 runs each)</a></li>
+<li><a href="#4-full-period-default-parameters-halt-off-500-runs-each">4. Full period: default parameters, halt off (500 runs each)</a></li>
+<li><a href="#5-multiple-comparisons">5. Multiple comparisons</a></li>
+<li><a href="#6-interpretation">6. Interpretation</a></li>
+<li><a href="#7-limitations">7. Limitations</a></li>
+<li><a href="#8-files">8. Files</a></li>
+</ol>
+</nav>
+<main>
+<p class="back"><a href="index.html">&larr; Validation study report</a></p>
+<details class="mobile-nav">
+<summary>Contents</summary>
+<ol>
+<li><a href="#verdict">Verdict</a></li>
+<li><a href="#1-how-the-null-model-works">1. How the null model works</a></li>
+<li><a href="#2-primary-run-out-of-sample-with-swap-real-risk-rules-1-000-runs-each">2. Primary run: out-of-sample, with swap, real risk rules (1,000 runs each)</a></li>
+<li><a href="#3-sensitivity-run-out-of-sample-without-swap-500-runs-each">3. Sensitivity run: out-of-sample, without swap (500 runs each)</a></li>
+<li><a href="#4-full-period-default-parameters-halt-off-500-runs-each">4. Full period: default parameters, halt off (500 runs each)</a></li>
+<li><a href="#5-multiple-comparisons">5. Multiple comparisons</a></li>
+<li><a href="#6-interpretation">6. Interpretation</a></li>
+<li><a href="#7-limitations">7. Limitations</a></li>
+<li><a href="#8-files">8. Files</a></li>
+</ol>
+</details>
+<article>
+<h1 id="random-entry-null-model-the-four-usdjpy-candidates">Random-Entry Null Model: the Four USDJPY Candidates</h1>
+<p><em>2026-11-24. Phase 6, step 0. Development data only (holdout never loaded into a backtest), no strategy changes, no optimisation, no risk-setting changes, no orders.</em></p>
+<h2 id="verdict"><a class="anchor" href="#verdict" aria-label="Link to this section">#</a>Verdict</h2>
+<p><strong>Nothing here shows that the candidates beat random timing.</strong></p>
+<p><strong>Against being long USDJPY for the same amount of time, no candidate does better</strong> (primary run: p = 0.23–0.98). EMA H1 does <em>worse</em> than 98% of random long exposure with the same trade structure. Over the full period, all four sit in the middle of the long-only null (p = 0.34–0.53). The candidates' profits are therefore what you'd expect from <strong>being long USDJPY during its rise</strong>, which confirms the Phase 6 diagnosis.</p>
+<p><strong>Against random timing of the same trades, with the same long/short mix, the evidence is weak.</strong> In the primary run, ADX H1 and ADX H4 sit in the top 4–6% (p = 0.041 and 0.064), and EMA H1 and EMA H4 are unremarkable (p = 0.63 and 0.26). After correcting for multiple comparisons, <strong>no result is significant</strong> in the primary run.</p>
+<p><strong>Exactly one result stands out:</strong> EMA H4 in the <em>no-swap sensitivity</em> run (p = 0.006 against random timing, 0.008 against long exposure). That run isn't a realistic cost model. It barely survives correction within its own group of 8 tests (Holm-adjusted 0.048) and fails across the whole study (0.14). With swap included, the same candidate is unremarkable (p = 0.26 and 0.54).</p>
+<p><strong>What this means for the research.</strong> The step-0 rule was: if the candidates' results fall inside the null's 5–95% range, trend research on this pair is not worth continuing. In the primary run:</p>
+<ul>
+<li><strong>Against long exposure:</strong> 3 of 4 candidates are inside that range, and EMA H1 falls <em>below</em> it, meaning worse than random long exposure.</li>
+<li><strong>Against random timing:</strong> 3 of 4 are inside it, and ADX H1 is at the 96th percentile, which doesn't survive correction.</li>
+</ul>
+<p>So <strong>the crossover trend family on USDJPY shows no evidence of skill beyond market beta.</strong> These results don't justify continuing it on this pair.</p>
+<hr />
+<h2 id="1-how-the-null-model-works"><a class="anchor" href="#1-how-the-null-model-works" aria-label="Link to this section">#</a>1. How the null model works</h2>
+<p>The new module is <code>fxq.validation.nullmodel</code>, with 9 tests.</p>
+<ol>
+<li><strong>Rebuild each candidate's real target-position series</strong> from the <em>saved</em> results:
+<ul>
+<li><strong>Out-of-sample:</strong> the walk-forward selections saved by the validation study, window by window, for both cost variants. This is the same construction as <code>stitched_backtest</code>.</li>
+<li><strong>Full period:</strong> default parameters, with the drawdown halt off, as in the baseline diagnostic.</li>
+</ul>
+</li>
+<li><strong>Check the rebuild before anything else.</strong> All <strong>12</strong> rebuilt series reproduce the saved results exactly: net P&amp;L to within $0.000001, trade counts, and halt flags. So the null is compared against the candidates' genuine trades.</li>
+<li><strong>Shift it at random.</strong> The series is <em>circularly shifted</em> (the end wraps to the start) by a random number of bars, at least 5% of the series length. This keeps exactly the number of position changes, every holding period, the long/short sequence and the total time in the market. Only the timing relative to price is destroyed.</li>
+<li><strong>Two versions of the null:</strong>
+<ul>
+<li><strong>Matched:</strong> the shifted series as it is. <em>Is the timing better than random, given this direction mix?</em></li>
+<li><strong>Long-only:</strong> the shifted series with every position made long. <em>Does the candidate beat simply being long USDJPY for the same amount of time?</em> Wherever the original reversed directly from long to short or back, one flat bar is inserted so that each original trade stays a separate trade. On the real series this keeps 96–100% of position runs and 98–99.5% of exposure.</li>
+</ul>
+</li>
+<li><strong>Same simulation as the candidates.</strong> Every null series runs through the <strong>same engine, costs and risk rules</strong>: real rules for the out-of-sample runs (1% risk, 2% daily limit, 15% halt, rollover window) and the halt-off diagnostic for the full period. Stops are 2 × ATR(14) at each bar's own time, the formula every candidate uses.</li>
+<li><strong>Number of runs:</strong> 1,000 per version for the primary run (out-of-sample, with swap), and 500 per version for the no-swap and full-period runs. That is <strong>16,000 null backtests</strong> in total, with fixed seeds (12345 + 100 × setting + version).</li>
+<li><strong>How results are expressed.</strong> The <strong>percentile</strong> is the share of null runs worse than the candidate. The <strong>p-value</strong> is (1 + null runs at least as good) / (1 + runs). This is the one-sided chance that random timing does as well, so a small value is evidence <em>against</em> random timing.</li>
+</ol>
+<p><strong>Checking that the null itself works</strong>, on synthetic prices in the tests:</p>
+<ul>
+<li>A signal that knows the next 24 bars' direction beats <strong>every</strong> random shift (p = 1/61).</li>
+<li>A signal with no information sits inside the null (0.05 &lt; p &lt; 0.95).</li>
+</ul>
+<h2 id="2-primary-run-out-of-sample-with-swap-real-risk-rules-1-000-runs-each"><a class="anchor" href="#2-primary-run-out-of-sample-with-swap-real-risk-rules-1-000-runs-each" aria-label="Link to this section">#</a>2. Primary run: out-of-sample, with swap, real risk rules (1,000 runs each)</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Candidate</th>
+<th>Version</th>
+<th>Actual net</th>
+<th>Null 5th / 50th / 95th percentile</th>
+<th>Percentile</th>
+<th>p-value</th>
+<th>Null runs that halted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EMA H1</td>
+<td>matched</td>
+<td>−505</td>
+<td>−1,413 / −15 / +4,149</td>
+<td>37%</td>
+<td>0.628</td>
+<td>99%</td>
+</tr>
+<tr>
+<td>EMA H1</td>
+<td><strong>long-only</strong></td>
+<td>−505</td>
+<td>+397 / +3,474 / +9,628</td>
+<td><strong>2%</strong></td>
+<td>0.979</td>
+<td>93%</td>
+</tr>
+<tr>
+<td>ADX H1</td>
+<td>matched</td>
+<td>+3,710</td>
+<td>−1,413 / +15 / +3,263</td>
+<td><strong>96%</strong></td>
+<td><strong>0.041</strong></td>
+<td>99%</td>
+</tr>
+<tr>
+<td>ADX H1</td>
+<td>long-only</td>
+<td>+3,710</td>
+<td>+160 / +3,258 / +10,742</td>
+<td>57%</td>
+<td>0.428</td>
+<td>88%</td>
+</tr>
+<tr>
+<td>EMA H4</td>
+<td>matched</td>
+<td>+1,165</td>
+<td>−1,351 / +333 / +2,616</td>
+<td>74%</td>
+<td>0.258</td>
+<td>17%</td>
+</tr>
+<tr>
+<td>EMA H4</td>
+<td>long-only</td>
+<td>+1,165</td>
+<td>−494 / +1,254 / +4,004</td>
+<td>46%</td>
+<td>0.537</td>
+<td>4%</td>
+</tr>
+<tr>
+<td>ADX H4</td>
+<td>matched</td>
+<td>+2,550</td>
+<td>−1,220 / +308 / +2,784</td>
+<td>94%</td>
+<td>0.064</td>
+<td>17%</td>
+</tr>
+<tr>
+<td>ADX H4</td>
+<td>long-only</td>
+<td>+2,550</td>
+<td>−305 / +1,514 / +4,181</td>
+<td>77%</td>
+<td>0.227</td>
+<td>6%</td>
+</tr>
+</tbody>
+</table></div>
+<p>What this shows:</p>
+<ul>
+<li><strong>In the long-only version, the median random long exposure earns about as much as the candidates, or more.</strong> For EMA H1, random long exposure earns a median +$3,474 against the candidate's −$505. These are trades with the <em>same</em> holding periods and <em>same</em> time in the market, just long and placed at random. The candidates show nothing beyond being long.</li>
+<li><strong>The matched-version percentiles for ADX H1 and ADX H4 (96th and 94th) are the only hint of timing skill.</strong> They don't survive correction for 8 tests (Holm-adjusted 0.33 and above).</li>
+<li><strong>On H1, the risk rules dominate everything.</strong> <strong>99%</strong> of random-timed matched runs also hit the 15% halt. Almost any trade structure of this kind halts on H1 under these rules (see the Phase 6 diagnosis, Section 7).</li>
+</ul>
+<h2 id="3-sensitivity-run-out-of-sample-without-swap-500-runs-each"><a class="anchor" href="#3-sensitivity-run-out-of-sample-without-swap-500-runs-each" aria-label="Link to this section">#</a>3. Sensitivity run: out-of-sample, without swap (500 runs each)</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Candidate</th>
+<th>Version</th>
+<th>Actual net</th>
+<th>Null 5th / 50th / 95th percentile</th>
+<th>Percentile</th>
+<th>p-value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EMA H1</td>
+<td>matched</td>
+<td>+1,195</td>
+<td>−1,394 / +336 / +4,378</td>
+<td>64%</td>
+<td>0.361</td>
+</tr>
+<tr>
+<td>EMA H1</td>
+<td>long-only</td>
+<td>+1,195</td>
+<td>+389 / +3,282 / +8,721</td>
+<td>11%</td>
+<td>0.886</td>
+</tr>
+<tr>
+<td>ADX H1</td>
+<td>matched</td>
+<td>+5,544</td>
+<td>−1,393 / +225 / +4,222</td>
+<td>97%</td>
+<td>0.036</td>
+</tr>
+<tr>
+<td>ADX H1</td>
+<td>long-only</td>
+<td>+5,544</td>
+<td>−278 / +2,891 / +11,370</td>
+<td>79%</td>
+<td>0.210</td>
+</tr>
+<tr>
+<td>EMA H4</td>
+<td>matched</td>
+<td>+7,447</td>
+<td>−1,237 / +869 / +4,976</td>
+<td><strong>99.6%</strong></td>
+<td><strong>0.006</strong></td>
+</tr>
+<tr>
+<td>EMA H4</td>
+<td>long-only</td>
+<td>+7,447</td>
+<td>−495 / +2,493 / +5,691</td>
+<td><strong>99.4%</strong></td>
+<td><strong>0.008</strong></td>
+</tr>
+<tr>
+<td>ADX H4</td>
+<td>matched</td>
+<td>+5,201</td>
+<td>−1,219 / +665 / +3,776</td>
+<td>98%</td>
+<td>0.022</td>
+</tr>
+<tr>
+<td>ADX H4</td>
+<td>long-only</td>
+<td>+5,201</td>
+<td>+76 / +2,411 / +5,203</td>
+<td>95%</td>
+<td>0.052</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Swap set to 0 is not realistic:</strong> real carry existed in every year. EMA H4 without swap is the one result outside the null's range against both versions. Reasons for caution:</p>
+<ul>
+<li>With swap, EMA H4 left 3 of its 6 walk-forward windows flat. Without swap, all six traded. So these are <strong>different trade sequences</strong>, not the same trades at different cost.</li>
+<li>With swap included, EMA H4 is unremarkable (74th and 46th percentile).</li>
+</ul>
+<h2 id="4-full-period-default-parameters-halt-off-500-runs-each"><a class="anchor" href="#4-full-period-default-parameters-halt-off-500-runs-each" aria-label="Link to this section">#</a>4. Full period: default parameters, halt off (500 runs each)</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Candidate</th>
+<th>Matched: percentile, p</th>
+<th>Long-only: percentile, p</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EMA H1</td>
+<td>97%, 0.028</td>
+<td>67%, 0.335</td>
+</tr>
+<tr>
+<td>ADX H1</td>
+<td>95%, 0.052</td>
+<td>47%, 0.527</td>
+</tr>
+<tr>
+<td>EMA H4</td>
+<td>96%, 0.046</td>
+<td>63%, 0.375</td>
+</tr>
+<tr>
+<td>ADX H4</td>
+<td>92%, 0.082</td>
+<td>58%, 0.425</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Against random timing,</strong> the trend logic looks somewhat better than random in this in-sample diagnostic (92nd–97th percentile).</li>
+<li><strong>Against random long exposure,</strong> it looks entirely ordinary (47th–67th percentile).</li>
+<li><strong>The matched p-values are biased downward.</strong> These four candidates were <em>chosen</em> as the best 4 of 39 baseline runs, so their full-period results were selected for looking good.</li>
+</ul>
+<h2 id="5-multiple-comparisons"><a class="anchor" href="#5-multiple-comparisons" aria-label="Link to this section">#</a>5. Multiple comparisons</h2>
+<p>The study makes <strong>24 comparisons</strong>: 4 candidates × 3 run types × 2 null versions. Holm-adjusted p-values (<code>multiple_testing.csv</code>):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Comparison</th>
+<th>Raw p</th>
+<th>Holm-adjusted, within its group of 8</th>
+<th>Holm-adjusted, all 24</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EMA H4, no swap, matched</td>
+<td>0.006</td>
+<td><strong>0.048</strong></td>
+<td>0.144</td>
+</tr>
+<tr>
+<td>EMA H4, no swap, long-only</td>
+<td>0.008</td>
+<td>0.056</td>
+<td>0.184</td>
+</tr>
+<tr>
+<td>ADX H4, no swap, matched</td>
+<td>0.022</td>
+<td>0.132</td>
+<td>0.483</td>
+</tr>
+<tr>
+<td>EMA H1, full period, matched</td>
+<td>0.028</td>
+<td>0.224</td>
+<td>0.587</td>
+</tr>
+<tr>
+<td>ADX H1, no swap, matched</td>
+<td>0.036</td>
+<td>0.180</td>
+<td>0.719</td>
+</tr>
+<tr>
+<td><strong>ADX H1, with swap (primary), matched</strong></td>
+<td>0.041</td>
+<td>0.328</td>
+<td>0.778</td>
+</tr>
+<tr>
+<td>all others</td>
+<td>≥ 0.046</td>
+<td>≥ 0.32</td>
+<td>≥ 0.83</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>No comparison is significant study-wide</strong>, and none in the primary group. This is the same conclusion as the validation study's deflated Sharpe ratio, reached by an independent method.</p>
+<h2 id="6-interpretation"><a class="anchor" href="#6-interpretation" aria-label="Link to this section">#</a>6. Interpretation</h2>
+<ol>
+<li><strong>The candidates' profits are consistent with long USDJPY exposure.</strong> Random long positions with the candidates' own holding periods and time in the market earn as much. This confirms Phase 6 finding 2: all net profit came from long trades during the 2021–24 rise.</li>
+<li><strong>There is at best weak, unconfirmed evidence of timing skill</strong> beyond a random placement of the same trades, mainly for the ADX variants. It doesn't survive correction, and in the primary run it is no better than long exposure.</li>
+<li><strong>The H1 results are dominated by the risk rules.</strong> 99% of random structures also halt. The halt is a property of the trade structure combined with the risk rules, not of particular entries (Phase 6, Section 7).</li>
+<li><strong>Recommendation:</strong> treat the EMA/ADX crossover family on USDJPY as <strong>not validated and not worth tuning further</strong>. Use this null model as the standard benchmark for any future hypothesis, H-A to H-C, in addition to the nine validation checks. A new strategy should have to beat <strong>both</strong> null versions, in the primary run, after correction.</li>
+</ol>
+<h2 id="7-limitations"><a class="anchor" href="#7-limitations" aria-label="Link to this section">#</a>7. Limitations</h2>
+<ul>
+<li><strong>The null is conditional on each candidate's own trade structure.</strong> It tests timing, not whether a different structure (holding periods, frequency) would do better.</li>
+<li><strong>The circular shift keeps the position series' own autocorrelation</strong> and creates one artificial boundary where the end wraps to the start. Shifts below 5% of the length are excluded to avoid near-copies of the original.</li>
+<li><strong>Long-only inserts one flat bar per direct reversal.</strong> A one-bar position squeezed between two reversals disappears; on the real series that is 0–4% of position runs.</li>
+<li><strong>Resolution:</strong> the smallest possible p-value is 0.001 with 1,000 runs and 0.002 with 500.</li>
+<li><strong>Swap</strong> inherits the static November 2026 snapshot approximation in every run that includes it. The no-swap runs understate real carry.</li>
+<li><strong>Selection bias:</strong> the candidates were selected from 39 runs, which biases the full-period comparisons toward significance. The out-of-sample runs are less affected.</li>
+<li><strong>Everything is on USDJPY development data, 2020–2025</strong> (out-of-sample 2022–2024). Nothing here says how these or other strategies would behave in another market regime.</li>
+</ul>
+<h2 id="8-files"><a class="anchor" href="#8-files" aria-label="Link to this section">#</a>8. Files</h2>
+<p>All in <code>reports/phase6_diagnosis/null_model/</code>:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>File</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>null_model_report.md</code></td>
+<td>this report</td>
+</tr>
+<tr>
+<td><code>null_model_study.py</code></td>
+<td>the study script: rebuilds the series, checks them against saved results, runs the null in parallel</td>
+</tr>
+<tr>
+<td><code>null_summary.csv</code></td>
+<td>each candidate's value against the null, per metric (net profit, Sharpe, max drawdown)</td>
+</tr>
+<tr>
+<td><code>multiple_testing.csv</code></td>
+<td>raw and Holm-adjusted p-values for all 24 comparisons</td>
+</tr>
+<tr>
+<td><code>null_&lt;candidate&gt;_&lt;run&gt;_&lt;version&gt;.csv</code></td>
+<td>every null run: shift, metrics, halted flag, long trades, swap (24 files)</td>
+</tr>
+<tr>
+<td><code>null_study.json</code></td>
+<td>settings, seeds, holdout cutoffs, safety confirmation</td>
+</tr>
+</tbody>
+</table></div>
+<p>The library code is <code>src/fxq/validation/nullmodel.py</code>, tested in <code>tests/test_nullmodel.py</code>. Both are not yet committed. To reproduce:</p>
+<pre><code class="language-powershell">.\.venv\Scripts\python.exe reports\phase6_diagnosis\null_model\null_model_study.py . reports\phase6_diagnosis\null_model
+</code></pre>
+<p>It runs 16,000 backtests, about 15 minutes on 7 worker processes.</p>
+
+</article>
+<footer>Published from <code>null_model_report.md</code>, the study report.</footer>
+</main>
+</div>
+</body>
+</html>
