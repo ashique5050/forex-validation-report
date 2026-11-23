@@ -1,0 +1,870 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Validation Study: Four USDJPY Trend Candidates</title>
+<meta name="description" content="Formal walk-forward validation of four USDJPY trend-following candidates: none passed all nine checks, with or without swap.">
+<meta name="color-scheme" content="light dark">
+<style>
+:root {
+  --bg: #fbfbfa; --surface: #ffffff; --text: #1d2125; --muted: #5d6670; --border: #e3e5e8;
+  --accent: #1f5f99; --accent-soft: #eaf2fa; --row: #f6f7f8; --ok: #1d7a3e; --no: #b3261e;
+  --code: #f1f3f5; --quote: #fff7e6; --quote-border: #e0a526;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111417; --surface: #181c20; --text: #e4e7ea; --muted: #9aa4ae; --border: #2b3137;
+    --accent: #7db3e8; --accent-soft: #1b2733; --row: #1d2227; --ok: #5cc184; --no: #f0857d;
+    --code: #232a31; --quote: #2a2418; --quote-border: #c9922a;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+.layout { display: grid; grid-template-columns: 17rem minmax(0, 1fr); max-width: 82rem; margin: 0 auto; }
+nav.toc {
+  position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
+  padding: 2rem 1.25rem; border-right: 1px solid var(--border);
+}
+nav.toc .label { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 .75rem; }
+nav.toc ol { list-style: none; margin: 0; padding: 0; }
+nav.toc li { margin: 0; }
+nav.toc a {
+  display: block; padding: .3rem .6rem; border-radius: 6px; color: var(--text);
+  text-decoration: none; font-size: .9rem; line-height: 1.35;
+}
+nav.toc a:hover, nav.toc a:focus-visible { background: var(--accent-soft); color: var(--accent); }
+main { padding: 2.5rem 3rem 4rem; min-width: 0; }
+article { max-width: 60rem; }
+h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 .5rem; letter-spacing: -.01em; }
+h2 { font-size: 1.45rem; margin: 2.75rem 0 .9rem; padding-top: .5rem; border-top: 1px solid var(--border); }
+h3 { font-size: 1.15rem; margin: 2rem 0 .6rem; }
+h2, h3 { position: relative; }
+.anchor {
+  position: absolute; left: -1.1em; color: var(--muted); text-decoration: none; opacity: 0;
+  font-weight: 400; padding-right: .3em;
+}
+h2:hover .anchor, h3:hover .anchor, .anchor:focus { opacity: 1; }
+p, li { max-width: 46rem; }
+a { color: var(--accent); }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+code {
+  font: .88em/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  background: var(--code); padding: .1em .35em; border-radius: 4px;
+}
+pre { background: var(--code); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+pre code { background: none; padding: 0; }
+blockquote {
+  margin: 1.25rem 0; padding: .75rem 1rem; background: var(--quote);
+  border-left: 4px solid var(--quote-border); border-radius: 0 8px 8px 0;
+}
+blockquote p { margin: .25rem 0; }
+.table-wrap {
+  overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--surface); -webkit-overflow-scrolling: touch;
+}
+table { border-collapse: collapse; width: 100%; font-size: .9rem; font-variant-numeric: tabular-nums; }
+th, td { padding: .5rem .75rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+th { background: var(--row); font-weight: 600; white-space: nowrap; }
+tbody tr:nth-child(even) { background: var(--row); }
+tbody tr:last-child td { border-bottom: 0; }
+.ok { color: var(--ok); font-weight: 700; }
+.no { color: var(--no); font-weight: 700; }
+.mobile-nav { display: none; }
+footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--muted); font-size: .85rem; }
+@media (max-width: 64rem) {
+  .layout { display: block; }
+  nav.toc { display: none; }
+  main { padding: 1.25rem 1rem 3rem; }
+  .mobile-nav {
+    display: block; margin: 0 0 1.5rem; border: 1px solid var(--border); border-radius: 8px;
+    background: var(--surface);
+  }
+  .mobile-nav summary { cursor: pointer; padding: .7rem 1rem; font-weight: 600; }
+  .mobile-nav ol { list-style: none; margin: 0; padding: 0 .5rem .75rem; }
+  .mobile-nav a { display: block; padding: .35rem .5rem; color: var(--text); text-decoration: none; }
+  h1 { font-size: 1.6rem; }
+  .anchor { display: none; }
+}
+@media print {
+  nav.toc, .mobile-nav, .anchor { display: none !important; }
+  .layout { display: block; }
+  main { padding: 0; }
+  .table-wrap { overflow: visible; border: 0; }
+  h2 { break-after: avoid; }
+  tr { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Sections">
+<p class="label">Contents</p>
+<ol>
+<li><a href="#verdict">Verdict</a></li>
+<li><a href="#1-background-how-the-candidates-were-chosen">1. Background: how the candidates were chosen</a></li>
+<li><a href="#2-data-and-holdout-protection">2. Data and holdout protection</a></li>
+<li><a href="#3-methodology">3. Methodology</a></li>
+<li><a href="#4-multiple-testing-correction">4. Multiple-testing correction</a></li>
+<li><a href="#5-results-with-swap-primary">5. Results with swap (primary)</a></li>
+<li><a href="#6-results-without-swap-sensitivity">6. Results without swap (sensitivity)</a></li>
+<li><a href="#7-check-by-check">7. Check-by-check</a></li>
+<li><a href="#8-walk-forward-windows-with-swap">8. Walk-forward windows (with swap)</a></li>
+<li><a href="#9-why-the-candidates-fail">9. Why the candidates fail</a></li>
+<li><a href="#10-how-much-swap-matters">10. How much swap matters</a></li>
+<li><a href="#11-limitations">11. Limitations</a></li>
+<li><a href="#12-conclusion-and-recommendations">12. Conclusion and recommendations</a></li>
+<li><a href="#13-files-and-reproducibility">13. Files and reproducibility</a></li>
+</ol>
+</nav>
+<main>
+<details class="mobile-nav">
+<summary>Contents</summary>
+<ol>
+<li><a href="#verdict">Verdict</a></li>
+<li><a href="#1-background-how-the-candidates-were-chosen">1. Background: how the candidates were chosen</a></li>
+<li><a href="#2-data-and-holdout-protection">2. Data and holdout protection</a></li>
+<li><a href="#3-methodology">3. Methodology</a></li>
+<li><a href="#4-multiple-testing-correction">4. Multiple-testing correction</a></li>
+<li><a href="#5-results-with-swap-primary">5. Results with swap (primary)</a></li>
+<li><a href="#6-results-without-swap-sensitivity">6. Results without swap (sensitivity)</a></li>
+<li><a href="#7-check-by-check">7. Check-by-check</a></li>
+<li><a href="#8-walk-forward-windows-with-swap">8. Walk-forward windows (with swap)</a></li>
+<li><a href="#9-why-the-candidates-fail">9. Why the candidates fail</a></li>
+<li><a href="#10-how-much-swap-matters">10. How much swap matters</a></li>
+<li><a href="#11-limitations">11. Limitations</a></li>
+<li><a href="#12-conclusion-and-recommendations">12. Conclusion and recommendations</a></li>
+<li><a href="#13-files-and-reproducibility">13. Files and reproducibility</a></li>
+</ol>
+</details>
+<article>
+<h1 id="validation-study-four-usdjpy-trend-candidates">Validation Study: Four USDJPY Trend Candidates</h1>
+<p><em>Study date: 2026-11-23. Code at commit <code>b19a48d</code>. Research only: no broker connection, no orders, no holdout data.</em></p>
+<h2 id="verdict"><a class="anchor" href="#verdict" aria-label="Link to this section">#</a>Verdict</h2>
+<p><strong>None of the four candidates is validated.</strong> No candidate passed all nine checks, either with swap or without swap. The study's rule was that a candidate counts as robust only if it passes both, so <strong>0 of 4 are robust.</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Candidate</th>
+<th>With swap (primary)</th>
+<th>Without swap (sensitivity)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EMA Crossover H1</td>
+<td>FAIL (2 of 9 checks passed)</td>
+<td>FAIL (3 of 9)</td>
+</tr>
+<tr>
+<td>ADX EMA Trend H1</td>
+<td>FAIL (5 of 9)</td>
+<td>FAIL (5 of 9)</td>
+</tr>
+<tr>
+<td>EMA Crossover H4</td>
+<td>FAIL (3 of 9)</td>
+<td>FAIL (5 of 9)</td>
+</tr>
+<tr>
+<td>ADX EMA Trend H4</td>
+<td>FAIL (3 of 9)</td>
+<td>FAIL (5 of 9)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Three checks failed in all eight runs:</p>
+<ul>
+<li><strong>Trade count:</strong> every run had fewer than 100 out-of-sample trades.</li>
+<li><strong>Deflated Sharpe ratio:</strong> every run was far below 0.95, the best being 0.65.</li>
+<li><strong>Monte Carlo drawdown risk:</strong> the probability of a drawdown of 15% or more was 12–68%, against a limit of 5%.</li>
+</ul>
+<p>The positive profits seen in some runs come from the 2022–2024 USDJPY trend. After accounting for all 75 strategy trials run in this research, they are not statistically distinguishable from luck.</p>
+<hr />
+<h2 id="1-background-how-the-candidates-were-chosen"><a class="anchor" href="#1-background-how-the-candidates-were-chosen" aria-label="Link to this section">#</a>1. Background: how the candidates were chosen</h2>
+<p>Thirty-nine baseline experiments were run first:</p>
+<ul>
+<li>7 strategies on H1 and 6 on H4, for each of EURUSD, GBPUSD and USDJPY</li>
+<li>default textbook parameters</li>
+<li>development data only</li>
+<li>each run twice: with the real risk rules, and as a diagnostic with the 15% drawdown halt switched off</li>
+</ul>
+<p>In the diagnostic runs, no strategy was consistently profitable across pairs. The only positive cluster was trend-following on USDJPY. The four strongest USDJPY results were chosen for this formal study:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Candidate</th>
+<th>Diagnostic net P&amp;L, 2020–2025 (halt off)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EMA Crossover H1</td>
+<td>+$6,698</td>
+</tr>
+<tr>
+<td>ADX EMA Trend H1</td>
+<td>+$4,506</td>
+</tr>
+<tr>
+<td>EMA Crossover H4</td>
+<td>+$3,092</td>
+</tr>
+<tr>
+<td>ADX EMA Trend H4</td>
+<td>+$2,311</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Selection bias:</strong> these candidates were picked <em>after</em> the results were seen. The deflated Sharpe ratio corrects for the number of trials, but not fully for that choice.</p>
+<h2 id="2-data-and-holdout-protection"><a class="anchor" href="#2-data-and-holdout-protection" aria-label="Link to this section">#</a>2. Data and holdout protection</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>H1</th>
+<th>H4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Development data</td>
+<td>2020-01-01 22:00 → 2025-03-06 04:00 UTC (32,028 bars)</td>
+<td>2020-01-01 22:00 → 2025-03-04 06:00 UTC (8,046 bars)</td>
+</tr>
+<tr>
+<td>Holdout (final 25%)</td>
+<td>from 2025-03-06 05:00 (10,676 bars)</td>
+<td>from 2025-03-04 10:00 (2,682 bars)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>How the holdout was kept out:</strong></p>
+<ul>
+<li>Each dataset's holdout begins at its own boundary, the final 25% of its own bars. H4's starts two days earlier than H1's.</li>
+<li>Holdout rows were discarded straight after each CSV was read, and the pipeline only ever received development data. It was given the cutoff via the new <code>holdout_cutoff</code> option (commit <code>b19a48d</code>), which raises an error if any bar reaches the holdout.</li>
+<li>The holdout test step was disabled (<code>holdout=&quot;never&quot;</code>).</li>
+</ul>
+<p><strong>Confirmed by the study script:</strong> no holdout ledger exists, the scratch ledger was never written, and the earlier baseline results are byte-for-byte unchanged.</p>
+<p><strong>Data quality:</strong> see <code>reports/historical_data_audit.md</code> (revision 3). The data is clean, the M15 file covers 2020–2026, and each file's unfinished final candle is dropped by the loader.</p>
+<h2 id="3-methodology"><a class="anchor" href="#3-methodology" aria-label="Link to this section">#</a>3. Methodology</h2>
+<p>The existing pipeline, <code>fxq.validation.validate_strategy</code>, was used without changes to its method.</p>
+<ol>
+<li>
+<p><strong>Parameter grid.</strong> Each candidate's default grid has 9 settings, including the textbook default.</p>
+<ul>
+<li>EMA Crossover: fast 10 / 20 / 30 × slow 50 / 100 / 150.</li>
+<li>ADX EMA Trend: (fast, slow) = (10, 30), (20, 50), (30, 90) × ADX threshold 20 / 25 / 30.</li>
+</ul>
+<p>Each setting is backtested once on the whole development period. Each is one <strong>trial</strong>, and together they give the <em>grid profitable share</em> check.</p>
+</li>
+<li>
+<p><strong>Walk-forward.</strong> Six windows: 2 years of training, then 6 months of trading, rolling forward 6 months each time.</p>
+<ul>
+<li>The traded periods run from <strong>2021-12-31 to 2024-12-27</strong>. The last 10 weeks before the holdout are too short for a seventh window, so they are not traded.</li>
+<li>In each window, the setting with the best <em>robust</em> training Sharpe is chosen: the lower of its own Sharpe and the median of itself and its grid neighbours.</li>
+<li>A setting needs at least 30 training trades to be chosen. A window where none qualifies stays flat.</li>
+<li>The six test periods are joined into <strong>one continuous out-of-sample backtest</strong>, in which the account, positions and risk limits carry over.</li>
+</ul>
+</li>
+<li>
+<p><strong>Out-of-sample statistics:</strong></p>
+<ul>
+<li>a full performance report</li>
+<li>the probabilistic Sharpe ratio (PSR) against 0</li>
+<li>walk-forward efficiency: out-of-sample return ÷ the chosen settings' training return</li>
+</ul>
+</li>
+<li>
+<p><strong>Monte Carlo</strong> (5,000 runs, fixed seed 12345):</p>
+<ul>
+<li>trade bootstrap → probability of a loss</li>
+<li>trade shuffle → the range of possible drawdown paths</li>
+<li>5-day block bootstrap of daily returns → probability of a drawdown of 15% or more</li>
+</ul>
+</li>
+<li>
+<p><strong>Cost stress.</strong> The same out-of-sample selections are rerun with <strong>1.5× spread, 2× slippage and $7 per lot commission</strong>. The $7 replaces the Standard account's $0; it is not added to it.</p>
+</li>
+<li>
+<p><strong>Checks.</strong> All nine must pass. An undefined value counts as a fail.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Out-of-sample trades</td>
+<td>≥ 100</td>
+</tr>
+<tr>
+<td>Out-of-sample net profit</td>
+<td>&gt; 0</td>
+</tr>
+<tr>
+<td>PSR</td>
+<td>≥ 0.95</td>
+</tr>
+<tr>
+<td>Deflated Sharpe ratio (DSR)</td>
+<td>≥ 0.95</td>
+</tr>
+<tr>
+<td>Walk-forward efficiency (WFE)</td>
+<td>≥ 0.5</td>
+</tr>
+<tr>
+<td>Cost-stress net profit</td>
+<td>&gt; 0</td>
+</tr>
+<tr>
+<td>Monte Carlo P(loss)</td>
+<td>≤ 5%</td>
+</tr>
+<tr>
+<td>Monte Carlo P(drawdown ≥ 15%)</td>
+<td>≤ 5%</td>
+</tr>
+<tr>
+<td>Grid profitable share</td>
+<td>≥ 50%</td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li>
+<p><strong>Swap comparison.</strong> The out-of-sample run is repeated with swap removed. This is reported, not checked.</p>
+</li>
+</ol>
+<p><strong>Costs and risk.</strong> These are as configured and were not changed:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Setting</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Account</td>
+<td>AMarkets Standard</td>
+</tr>
+<tr>
+<td>Commission</td>
+<td>$0</td>
+</tr>
+<tr>
+<td>Spread</td>
+<td>M15 spread at each bar's open, never below the 1.5-pip USDJPY floor</td>
+</tr>
+<tr>
+<td>Slippage</td>
+<td>0.2 pips per side</td>
+</tr>
+<tr>
+<td>Entries</td>
+<td>none between 16:45 and 17:15 New York (rollover)</td>
+</tr>
+<tr>
+<td>Risk per trade</td>
+<td>1%</td>
+</tr>
+<tr>
+<td>Open-risk cap</td>
+<td>3%</td>
+</tr>
+<tr>
+<td>Daily loss limit</td>
+<td>2%</td>
+</tr>
+<tr>
+<td>Drawdown halt</td>
+<td><strong>15%, permanent</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="4-multiple-testing-correction"><a class="anchor" href="#4-multiple-testing-correction" aria-label="Link to this section">#</a>4. Multiple-testing correction</h2>
+<p>The deflated Sharpe ratio answers one question: is the out-of-sample Sharpe ratio higher than the best result you'd expect from luck across all the trials run?</p>
+<ul>
+<li><strong>Trials counted: N = 75.</strong> That is 39 earlier experiments + 4 candidates × 9 grid settings. The candidates' defaults are counted twice (once in each group), which makes the test slightly stricter.</li>
+<li><strong>Which Sharpe ratios represent the 39 earlier experiments.</strong> The primary version uses the halt-off diagnostic runs, which are the ones the candidates were chosen from. A sensitivity version uses the real-risk-rule runs. The verdict uses whichever gives the lower DSR; here that was the primary version in all 8 runs.</li>
+<li><strong>The luck benchmark (SR0)</strong> is 0.077 per day with swap and 0.084 without. That is roughly an <strong>annualised Sharpe of 1.24–1.35</strong> that the out-of-sample result must clearly exceed.</li>
+</ul>
+<h2 id="5-results-with-swap-primary"><a class="anchor" href="#5-results-with-swap-primary" aria-label="Link to this section">#</a>5. Results with swap (primary)</h2>
+<blockquote>
+<p><strong>Swap is a static approximation.</strong> The November 2026 AMarkets-Demo Standard snapshot rates (USDJPY long +0.1, short −25.0 points per lot per night) are applied to every year from 2020. These are <strong>not historical rates.</strong> The short swap overstates the 2020–21 cost, and the long swap understates the real 2022–24 carry.</p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Candidate</th>
+<th>Out-of-sample trades</th>
+<th>Net P&amp;L</th>
+<th>Return</th>
+<th>Sharpe (annual)</th>
+<th>Max drawdown</th>
+<th>PSR</th>
+<th>DSR</th>
+<th>WFE</th>
+<th>Stress net</th>
+<th>P(loss)</th>
+<th>P(drawdown ≥ 15%)</th>
+<th>Grid profitable</th>
+<th>Halted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EMA Crossover H1</td>
+<td>93</td>
+<td><strong>−$505</strong></td>
+<td>−5.0%</td>
+<td>−0.11</td>
+<td>−15.1%</td>
+<td>0.43</td>
+<td>0.01</td>
+<td>−0.13</td>
+<td>+$1,022</td>
+<td>66%</td>
+<td>68%</td>
+<td>67%</td>
+<td><strong>2022-10-03</strong></td>
+</tr>
+<tr>
+<td>ADX EMA Trend H1</td>
+<td>62</td>
+<td>+$3,710</td>
+<td>+37.1%</td>
+<td>1.01</td>
+<td>−15.0%</td>
+<td>0.97</td>
+<td>0.33</td>
+<td>1.72</td>
+<td>+$3,128</td>
+<td>13%</td>
+<td>23%</td>
+<td>100%</td>
+<td><strong>2022-09-22</strong></td>
+</tr>
+<tr>
+<td>EMA Crossover H4</td>
+<td>42</td>
+<td>+$1,165</td>
+<td>+11.6%</td>
+<td>0.54</td>
+<td>−11.9%</td>
+<td>0.83</td>
+<td>0.11</td>
+<td>1.31</td>
+<td>+$774</td>
+<td>24%</td>
+<td>15%</td>
+<td>0%</td>
+<td>no</td>
+</tr>
+<tr>
+<td>ADX EMA Trend H4</td>
+<td>41</td>
+<td>+$2,550</td>
+<td>+25.5%</td>
+<td>0.82</td>
+<td>−12.4%</td>
+<td>0.92</td>
+<td>0.23</td>
+<td>1.17</td>
+<td>+$2,438</td>
+<td>5.9%</td>
+<td>20%</td>
+<td>0%</td>
+<td>no</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="6-results-without-swap-sensitivity"><a class="anchor" href="#6-results-without-swap-sensitivity" aria-label="Link to this section">#</a>6. Results without swap (sensitivity)</h2>
+<blockquote>
+<p><strong>Not a realistic cost model.</strong> Real carry existed in every year; this run sets it to 0 to show how much the static swap approximation drives the result.</p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Candidate</th>
+<th>Out-of-sample trades</th>
+<th>Net P&amp;L</th>
+<th>Return</th>
+<th>Sharpe (annual)</th>
+<th>Max drawdown</th>
+<th>PSR</th>
+<th>DSR</th>
+<th>WFE</th>
+<th>Stress net</th>
+<th>P(loss)</th>
+<th>P(drawdown ≥ 15%)</th>
+<th>Grid profitable</th>
+<th>Halted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EMA Crossover H1</td>
+<td>63</td>
+<td>+$1,195</td>
+<td>+11.9%</td>
+<td>0.41</td>
+<td>−15.1%</td>
+<td>0.77</td>
+<td>0.05</td>
+<td>0.22</td>
+<td>+$969</td>
+<td>36%</td>
+<td>53%</td>
+<td>67%</td>
+<td><strong>2022-10-04</strong></td>
+</tr>
+<tr>
+<td>ADX EMA Trend H1</td>
+<td>53</td>
+<td>+$5,544</td>
+<td>+55.4%</td>
+<td>1.20</td>
+<td>−15.0%</td>
+<td>0.97</td>
+<td>0.40</td>
+<td>1.40</td>
+<td>+$4,648</td>
+<td>5.3%</td>
+<td>35%</td>
+<td>100%</td>
+<td><strong>2022-11-01</strong></td>
+</tr>
+<tr>
+<td>EMA Crossover H4</td>
+<td>63</td>
+<td>+$7,447</td>
+<td>+74.5%</td>
+<td>1.56</td>
+<td>−11.1%</td>
+<td>0.998</td>
+<td>0.65</td>
+<td>7.00</td>
+<td>+$6,661</td>
+<td>1.1%</td>
+<td>12%</td>
+<td>0%</td>
+<td>no</td>
+</tr>
+<tr>
+<td>ADX EMA Trend H4</td>
+<td>56</td>
+<td>+$5,201</td>
+<td>+52.0%</td>
+<td>1.25</td>
+<td>−12.6%</td>
+<td>0.99</td>
+<td>0.43</td>
+<td>1.48</td>
+<td>+$5,006</td>
+<td>2.4%</td>
+<td>21%</td>
+<td>44%</td>
+<td>no</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="7-check-by-check"><a class="anchor" href="#7-check-by-check" aria-label="Link to this section">#</a>7. Check-by-check</h2>
+<p><span class="ok">✓</span> = pass, <span class="no">✗</span> = fail. W = with swap, N = without swap.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Check</th>
+<th>EMA H1 W / N</th>
+<th>ADX H1 W / N</th>
+<th>EMA H4 W / N</th>
+<th>ADX H4 W / N</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Out-of-sample trades ≥ 100</td>
+<td><span class="no">✗</span> / <span class="no">✗</span></td>
+<td><span class="no">✗</span> / <span class="no">✗</span></td>
+<td><span class="no">✗</span> / <span class="no">✗</span></td>
+<td><span class="no">✗</span> / <span class="no">✗</span></td>
+</tr>
+<tr>
+<td>Out-of-sample net &gt; 0</td>
+<td><span class="no">✗</span> / <span class="ok">✓</span></td>
+<td><span class="ok">✓</span> / <span class="ok">✓</span></td>
+<td><span class="ok">✓</span> / <span class="ok">✓</span></td>
+<td><span class="ok">✓</span> / <span class="ok">✓</span></td>
+</tr>
+<tr>
+<td>PSR ≥ 0.95</td>
+<td><span class="no">✗</span> / <span class="no">✗</span></td>
+<td><span class="ok">✓</span> / <span class="ok">✓</span></td>
+<td><span class="no">✗</span> / <span class="ok">✓</span></td>
+<td><span class="no">✗</span> / <span class="ok">✓</span></td>
+</tr>
+<tr>
+<td>DSR ≥ 0.95</td>
+<td><span class="no">✗</span> / <span class="no">✗</span></td>
+<td><span class="no">✗</span> / <span class="no">✗</span></td>
+<td><span class="no">✗</span> / <span class="no">✗</span></td>
+<td><span class="no">✗</span> / <span class="no">✗</span></td>
+</tr>
+<tr>
+<td>WFE ≥ 0.5</td>
+<td><span class="no">✗</span> / <span class="no">✗</span></td>
+<td><span class="ok">✓</span> / <span class="ok">✓</span></td>
+<td><span class="ok">✓</span> / <span class="ok">✓</span></td>
+<td><span class="ok">✓</span> / <span class="ok">✓</span></td>
+</tr>
+<tr>
+<td>Stress net &gt; 0</td>
+<td><span class="ok">✓</span> / <span class="ok">✓</span></td>
+<td><span class="ok">✓</span> / <span class="ok">✓</span></td>
+<td><span class="ok">✓</span> / <span class="ok">✓</span></td>
+<td><span class="ok">✓</span> / <span class="ok">✓</span></td>
+</tr>
+<tr>
+<td>P(loss) ≤ 5%</td>
+<td><span class="no">✗</span> / <span class="no">✗</span></td>
+<td><span class="no">✗</span> / <span class="no">✗</span></td>
+<td><span class="no">✗</span> / <span class="ok">✓</span></td>
+<td><span class="no">✗</span> / <span class="ok">✓</span></td>
+</tr>
+<tr>
+<td>P(drawdown ≥ 15%) ≤ 5%</td>
+<td><span class="no">✗</span> / <span class="no">✗</span></td>
+<td><span class="no">✗</span> / <span class="no">✗</span></td>
+<td><span class="no">✗</span> / <span class="no">✗</span></td>
+<td><span class="no">✗</span> / <span class="no">✗</span></td>
+</tr>
+<tr>
+<td>Grid profitable ≥ 50%</td>
+<td><span class="ok">✓</span> / <span class="ok">✓</span></td>
+<td><span class="ok">✓</span> / <span class="ok">✓</span></td>
+<td><span class="no">✗</span> / <span class="no">✗</span></td>
+<td><span class="no">✗</span> / <span class="no">✗</span></td>
+</tr>
+<tr>
+<td><strong>Passed</strong></td>
+<td><strong>2 / 3</strong></td>
+<td><strong>5 / 5</strong></td>
+<td><strong>3 / 5</strong></td>
+<td><strong>3 / 5</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="8-walk-forward-windows-with-swap"><a class="anchor" href="#8-walk-forward-windows-with-swap" aria-label="Link to this section">#</a>8. Walk-forward windows (with swap)</h2>
+<p>Each cell shows the setting chosen in training, then that window's trades and net P&amp;L traded on its own (not as part of the joined run). &quot;Flat&quot; means no setting had the 30 training trades needed.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Test window</th>
+<th>EMA Crossover H1</th>
+<th>ADX EMA Trend H1</th>
+<th>EMA Crossover H4</th>
+<th>ADX EMA Trend H4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2022 H1</td>
+<td>10/50: 54 trades, +$425</td>
+<td>20/50/20: 35, <strong>+$3,915</strong></td>
+<td>flat</td>
+<td>flat</td>
+</tr>
+<tr>
+<td>2022 H2</td>
+<td>10/50: 40, −$886</td>
+<td>10/30/20: 28, −$202</td>
+<td>flat</td>
+<td>20/50/30: 7, +$815</td>
+</tr>
+<tr>
+<td>2023 H1</td>
+<td>30/50: 27, −$1,246</td>
+<td>20/50/20: 20, −$1,142</td>
+<td>10/50: 26, −$670</td>
+<td>flat</td>
+</tr>
+<tr>
+<td>2023 H2</td>
+<td>30/50: 45, −$9</td>
+<td>10/30/30: 22, −$1,505</td>
+<td>flat</td>
+<td>20/50/25: 14, −$431</td>
+</tr>
+<tr>
+<td>2024 H1</td>
+<td>30/50: 24, −$1,218</td>
+<td>20/50/20: 38, −$1,077</td>
+<td>30/50: 10, +$595</td>
+<td>20/50/20: 12, +$516</td>
+</tr>
+<tr>
+<td>2024 H2</td>
+<td>10/50: 67, +$1,464</td>
+<td>10/30/20: 72, +$1,025</td>
+<td>30/50: 7, +$1,193</td>
+<td>10/30/30: 10, +$1,329</td>
+</tr>
+</tbody>
+</table></div>
+<p>Settings are fast/slow for EMA Crossover and fast/slow/ADX threshold for ADX EMA Trend.</p>
+<p><strong>Within each candidate, results swing between windows.</strong></p>
+<ul>
+<li>ADX EMA Trend H1 made +$3,915 in the first half of 2022 (the USDJPY rally), then lost money in four of the next five windows.</li>
+<li>The settings chosen in training often failed in the window that followed. For example, EMA Crossover H1 chose 30/50 in 2023 H1 on a training Sharpe of 1.65, and that window's own Sharpe was −1.79.</li>
+</ul>
+<h2 id="9-why-the-candidates-fail"><a class="anchor" href="#9-why-the-candidates-fail" aria-label="Link to this section">#</a>9. Why the candidates fail</h2>
+<ol>
+<li><strong>There are too few trades to judge.</strong> Even the best runs had 41–93 out-of-sample trades. On H4 with swap, 2–3 of the six windows stayed flat because no setting reached 30 training trades. Those training runs also halted early under the 15% rule.</li>
+<li><strong>The H1 results cover only 2022.</strong> In both versions, the joined out-of-sample run hit the permanent 15% halt between September and November 2022. All H1 profit comes from the early-2022 rally, and nothing after it was traded.</li>
+<li><strong>No candidate is significant after counting 75 trials.</strong> The best DSR is 0.65 (EMA Crossover H4 without swap), against 0.95 required. A Sharpe ratio of about 1.0–1.6 over three years is within what the best of 75 random trials could produce.</li>
+<li><strong>Drawdown risk is too high for the risk rules.</strong> Monte Carlo puts the chance of a 15% drawdown at 12–68% in every run. The configured breaker exists precisely to stop trading at that point.</li>
+<li><strong>The H4 grids lose over the full period.</strong> With swap, all 9 settings on both H4 candidates lose over the whole development period under the real risk rules (most halt in 2020). The positive out-of-sample results therefore depend on <em>which</em> windows happened to trade.</li>
+<li><strong>One market regime.</strong> The out-of-sample period, 2022–2024, is dominated by USDJPY's rise from about 115 to 160 as the Fed hiked while the Bank of Japan held. A trend-follower that profits from that move has not been shown to work in any other regime.</li>
+</ol>
+<h2 id="10-how-much-swap-matters"><a class="anchor" href="#10-how-much-swap-matters" aria-label="Link to this section">#</a>10. How much swap matters</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Candidate</th>
+<th>Out-of-sample net, with swap</th>
+<th>Same settings, swap removed</th>
+<th>Full validation run without swap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EMA Crossover H1</td>
+<td>−$505</td>
+<td>−$207</td>
+<td>+$1,195</td>
+</tr>
+<tr>
+<td>ADX EMA Trend H1</td>
+<td>+$3,710</td>
+<td>+$4,229</td>
+<td>+$5,544</td>
+</tr>
+<tr>
+<td>EMA Crossover H4</td>
+<td>+$1,165</td>
+<td>+$1,505</td>
+<td>+$7,447</td>
+</tr>
+<tr>
+<td>ADX EMA Trend H4</td>
+<td>+$2,550</td>
+<td>+$2,989</td>
+<td>+$5,201</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Directly,</strong> swap costs $280–$440 on the same trades.</li>
+<li><strong>Indirectly, it matters far more.</strong> Swap changes the equity path, which changes when training windows halt, which settings reach 30 trades, and which windows trade at all. For EMA Crossover H4, removing swap removes all three flat windows, and the result grows from +$1,165 to +$7,447.</li>
+<li><strong>So the results depend heavily on an assumption known to be wrong for these years.</strong> Neither column is the historical truth. The real result lies somewhere between them, and it fails under both.</li>
+</ul>
+<h2 id="11-limitations"><a class="anchor" href="#11-limitations" aria-label="Link to this section">#</a>11. Limitations</h2>
+<ul>
+<li><strong>Swap</strong> uses static November 2026 demo-account rates for every year. Saturday and Sunday multipliers of 0 are an assumption, and holiday rollovers are charged like normal days.</li>
+<li><strong>Execution modelling:</strong>
+<ul>
+<li>fills use bar prices</li>
+<li>spread is the M15 bar's <em>minimum</em> spread, not the spread at the moment of the fill</li>
+<li>slippage is fixed at 0.2 pips and does not widen during news</li>
+</ul>
+</li>
+<li><strong>The deflated Sharpe ratio is approximate:</strong>
+<ul>
+<li>the 75 trials mix pairs and timeframes</li>
+<li>many trials are correlated, so the effective number of independent trials is smaller than 75, which errs on the strict side</li>
+<li>selection after viewing results is only partly corrected</li>
+</ul>
+</li>
+<li><strong>The four candidates are closely related</strong> (the same pair and similar crossover logic), so their results are not independent confirmations of each other.</li>
+<li><strong>Monte Carlo</strong> treats trades, or 5-day blocks of returns, as independent and ignores overlapping positions.</li>
+<li><strong>The out-of-sample period</strong> is about 3 years, and its last 10 weeks before the holdout are untraded.</li>
+</ul>
+<h2 id="12-conclusion-and-recommendations"><a class="anchor" href="#12-conclusion-and-recommendations" aria-label="Link to this section">#</a>12. Conclusion and recommendations</h2>
+<ul>
+<li>
+<p><strong>Do not trade, paper-trade or holdout-test these candidates.</strong> The holdout is reserved for a candidate that passes every check. Using it now would waste the one untouched test.</p>
+</li>
+<li>
+<p><strong>Do not tune further on this data to make them pass.</strong> Every additional setting tried raises N, and the bar with it. Tuning until the checks pass is exactly what this methodology is designed to catch.</p>
+</li>
+<li>
+<p><strong>Record the outcome.</strong> Thirty-nine baseline experiments and 36 validation trials produced no validated strategy. That is a legitimate research result.</p>
+</li>
+<li>
+<p><strong>If research continues, change the hypothesis, not the parameters.</strong> For example:</p>
+<ul>
+<li>a strategy family designed for lower turnover on H4</li>
+<li>regime filters stated in advance</li>
+<li>other pairs</li>
+<li>better historical swap data, which would remove the largest uncertainty here</li>
+</ul>
+<p>Any such study should start a fresh trial count, or extend this one, and must keep the holdout untouched.</p>
+</li>
+</ul>
+<h2 id="13-files-and-reproducibility"><a class="anchor" href="#13-files-and-reproducibility" aria-label="Link to this section">#</a>13. Files and reproducibility</h2>
+<p>All in <code>reports/validation/USDJPY_candidates_20261123/</code>, which is excluded from Git:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>File</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>summary.csv</code></td>
+<td>all 8 runs, every metric</td>
+</tr>
+<tr>
+<td><code>with_swap/</code>, <code>no_swap/</code></td>
+<td>for each candidate: <code>validation.txt</code>, <code>validation.json</code> (checks, DSR, Monte Carlo, stress, swap comparison), <code>dev_grid.csv</code>, <code>walk_forward_windows.csv</code>, <code>walk_forward_grids.csv</code>, and <code>oos/</code> (the full out-of-sample performance report and trade log)</td>
+</tr>
+<tr>
+<td><code>with_swap/trials.csv</code>, <code>no_swap/trials.csv</code></td>
+<td>all 75 trials, with their Sharpe ratios</td>
+</tr>
+<tr>
+<td><code>study.json</code></td>
+<td>data boundaries, trial count, swap source, safety confirmations</td>
+</tr>
+<tr>
+<td><code>usdjpy_validation_study.py</code></td>
+<td>the study script</td>
+</tr>
+<tr>
+<td><code>baseline_runs_script.py</code></td>
+<td>the script that produced the 39 baseline experiments</td>
+</tr>
+</tbody>
+</table></div>
+<p>The baseline results are in <code>reports/baseline/</code>, unchanged. The code is at commit <code>b19a48d</code>, and all 424 tests pass.</p>
+<p>To reproduce:</p>
+<pre><code class="language-powershell">.\.venv\Scripts\python.exe reports\validation\USDJPY_candidates_20261123\usdjpy_validation_study.py . reports\validation\&lt;new_folder&gt;
+</code></pre>
+<p>The script needs the 39 baseline summaries in <code>reports/baseline/</code>.</p>
+
+</article>
+<footer>Published from <code>validation_study_report.md</code>, the study report.</footer>
+</main>
+</div>
+</body>
+</html>
